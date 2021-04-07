@@ -9,7 +9,8 @@ class ApplicationsController < ApplicationController
   def create
     user = User.create(user_params)
     application = Application.new(description: application_params[:description],
-                                  user_id: user.id)
+                                  user_id: user.id,
+                                  id: application_params[:id])
     if application.save
       redirect_to "/applications/#{application.id}"
     else
@@ -25,6 +26,6 @@ class ApplicationsController < ApplicationController
   end
 
   def user_params
-    params.permit(:id, :full_name, :street_address, :city, :state, :zipcode)
+    params.permit(:full_name, :street_address, :city, :state, :zipcode)
   end
 end
