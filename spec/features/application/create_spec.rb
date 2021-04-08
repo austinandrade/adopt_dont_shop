@@ -36,7 +36,7 @@ RSpec.describe 'application creation' do
         fill_in 'Zipcode', with: 14567
         click_button 'Submit'
 
-        expect(current_path).to have_content("/applications")
+        expect(current_path).to_not eq("/applications/new")
         expect(page).to have_content('Brock Lesnar')
       end
     end

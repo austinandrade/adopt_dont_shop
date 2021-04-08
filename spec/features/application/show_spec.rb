@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe 'applications_pets show' do
   before(:each) do
     @shelter = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
-    @pet = @shelter.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: false)
+    @pet = @shelter.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
     @user = User.create!(full_name: 'Mike Piz', street_address: '13214 Yeet Rd.', city: 'Cleveland', state: 'OH', zipcode: 18907)
     @application = @user.applications.create!(status: 'PENDING', description: 'Give me it')
   end
@@ -40,5 +40,24 @@ RSpec.describe 'applications_pets show' do
     expect(page).to have_link(@pet.name)
     click_link(@pet.name)
     expect(page).to have_current_path("/pets/#{@pet.id}")
+  end
+
+  it "has a text box to search for pets per an in-progress status" do
+    visit "/applications/#{@application.id}"
+
+    expect(page).to have_button("Search")
+  end
+
+  it 'lists partial matches as search results' do
+    visit "/applications/#{@application.id}"
+
+    fill_in 'search', with: "Mr."
+    click_on("Search")
+
+    expect(page).to have_content(@pet.name)
+    expect(page).to have_content(@pet.shelter_name)
+    expect(page).to have_content(@pet.breed)
+    expect(page).to have_content(@pet.age)
+    expect(page).to_not have_content(@pet.adoptable)
   end
 end

@@ -1,3 +1,24 @@
+<h2> Add a Pet to this Application: </h2>
+<%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
+
+  <%= f.label :search_by_name %>
+  <%= f.text_field :search %>
+  <%= f.submit "Search" %>
+<% end %>
+
+
+<% if @pets %>
+  <% @pets.each do |pet| %>
+     Pet Found:
+    <p> Name: <%= pet.name %> <br>
+    Age: <%= pet.age %> <br>
+    Breed: <%= pet.breed %>  <br>
+    Shelter: <%= pet.shelter_name %> <br>
+    </p>
+  <% end %>
+<% end %>
+
+
 <h1> User: <%= @application.user.full_name %></h1>
 <h3> Street Address: <%= @application.user.street_address %> </h3>
 <h3> City: <%= @application.user.city %></h3>
@@ -10,7 +31,7 @@
 <% else %>
 <h2> Applying For:
   <% @application.pets.each do |pet| %>
-  <%= link_to "#{pet.pet_name},", {controller: "pets", action: "show", id: "#{pet.id}"} %>
+  <%= link_to "#{pet.name},", {controller: "pets", action: "show", id: "#{pet.id}"} %>
   <% end %>
 </h2>
 <% end %>
