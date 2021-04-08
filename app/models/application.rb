@@ -1,6 +1,7 @@
 class Application < ApplicationRecord
   validates :status, presence: true
   validates :user_id, presence: true, numericality: true
+  validates :description, length: {minimum: 15}, on: :update
 
   has_many :applications_pets, dependent: :destroy
   has_many :pets, through: :applications_pets, dependent: :destroy
