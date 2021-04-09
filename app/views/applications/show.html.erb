@@ -7,20 +7,20 @@
     <%= f.text_field :search %>
     <%= f.submit "Search" %>
   <% end %>
-<% end %>
 
-<% if @pets %>
-  <% @pets.each do |pet| %>
-     Adoptable Pet Found: <%= button_to "Adopt this Pet", {:controller => "applications_pets", :action => "update", :pet_id => pet.id, :application_id => @application.id }, method: :patch %>
-    <p> Name: <%= pet.name %> <br>
-    Age: <%= pet.age %> <br>
-    Breed: <%= pet.breed %>  <br>
-    Shelter: <%= pet.shelter_name %> <br>
 
-    </p>
+  <% if @pets %>
+    <% @pets.each do |pet| %>
+       Adoptable Pet Found: <%= button_to "Adopt this Pet", {:controller => "applications_pets", :action => "update", :pet_id => pet.id, :application_id => @application.id }, method: :patch %>
+      <p> Name: <%= pet.name %> <br>
+      Age: <%= pet.age %> <br>
+      Breed: <%= pet.breed %>  <br>
+      Shelter: <%= pet.shelter_name %> <br>
+
+      </p>
+    <% end %>
   <% end %>
 <% end %>
-
 
 <h1> User: <%= @application.user.full_name %></h1>
 <h3> Street Address: <%= @application.user.street_address %> </h3>
