@@ -4,6 +4,7 @@ RSpec.describe 'applications_pets show' do
   before(:each) do
     @shelter = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
     @pet = @shelter.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
+    @pet_2 = @shelter.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
     @user = User.create!(full_name: 'Mike Piz', street_address: '13214 Yeet Rd.', city: 'Cleveland', state: 'OH', zipcode: 18907)
     @application = @user.applications.create!(status: 'PENDING', description: 'Give me it')
   end
@@ -48,7 +49,7 @@ RSpec.describe 'applications_pets show' do
     expect(page).to have_button("Search")
   end
 
-  it 'lists partial matches as search results' do
+  it 'lists partial matches as search results and and an add to application button' do
     visit "/applications/#{@application.id}"
 
     fill_in 'search', with: "Mr."
@@ -59,5 +60,22 @@ RSpec.describe 'applications_pets show' do
     expect(page).to have_content(@pet.breed)
     expect(page).to have_content(@pet.age)
     expect(page).to_not have_content(@pet.adoptable)
+    expect(page).to have_button("Adopt this Pet")
   end
+
+  it 'clicks add to application button and shows pet under application' do
+    visit "/applications/#{@application.id}"
+
+    fill_in 'search', with: "Mr."
+    click_on("Search")
+    click_on("Adopt this Pet")
+    fill_in 'search', with: "Claw"
+    click_on("Search")
+    click_on("Adopt this Pet")
+
+    expect(page).to have_content("Applying For: #{@pet.name}, #{@pet_2.name}")
+
+    expect(page).to have_current_path("/applications/#{@application.id}")
+  end
+
 end

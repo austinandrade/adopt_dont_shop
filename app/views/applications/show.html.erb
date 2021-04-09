@@ -9,11 +9,12 @@
 
 <% if @pets %>
   <% @pets.each do |pet| %>
-     Pet Found:
+     Adoptable Pet Found: <%= button_to "Adopt this Pet", {:controller => "applications_pets", :action => "update", :pet_id => pet.id, :application_id => @application.id }, method: :patch %>
     <p> Name: <%= pet.name %> <br>
     Age: <%= pet.age %> <br>
     Breed: <%= pet.breed %>  <br>
     Shelter: <%= pet.shelter_name %> <br>
+
     </p>
   <% end %>
 <% end %>
