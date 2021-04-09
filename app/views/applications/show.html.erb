@@ -1,11 +1,13 @@
-<h2> Add a Pet to this Application: </h2>
-<%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
 
-  <%= f.label :search_by_name %>
-  <%= f.text_field :search %>
-  <%= f.submit "Search" %>
+<% if @application.status == 'In Progress' %>
+  <h2> Add a Pet to this Application: </h2>
+  <%= form_with url: "/applications/#{@application.id}", method: :get, local: true do |f| %>
+
+    <%= f.label :search_by_name %>
+    <%= f.text_field :search %>
+    <%= f.submit "Search" %>
+  <% end %>
 <% end %>
-
 
 <% if @pets %>
   <% @pets.each do |pet| %>
@@ -37,3 +39,13 @@
 </h2>
 <% end %>
 <h3> Application Status: <%= @application.status %> </h3>
+
+<% if @application.status == 'In Progress' && @application.pets.present? %>
+  <h2> Submit Application: </h2>
+  <%= form_with url: "/applications/#{@application.id}", method: :patch, local: true do |f| %>
+    <%= f.label :description_of_why_you_should_own_these_pets %>
+    <%= f.text_field :description %>
+
+    <%= f.submit :Submit %>
+  <% end %>
+<% end %>

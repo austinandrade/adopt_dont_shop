@@ -1,7 +1,7 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
-      if params[:search].present?
+      if params[:search].present? 
         @pets = Pet.adoptable.search(params[:search]) - @application.pets
       else
         @pets = Pet.adoptable - @application.pets
@@ -19,9 +19,17 @@ class ApplicationsController < ApplicationController
     if application.save
       redirect_to "/applications/#{application.id}"
     else
-      redirect_to '/applications/new'
       flash[:alert] = "Error: Please Fill in All Fields"
+      redirect_to '/applications/new'
     end
+  end
+
+  def update
+    application = Application.find(params[:id])
+    application.update(description: application_params[:description],
+                       user_id: application.user_id,
+                       status: 'Pending')
+    redirect_to "/applications/#{application.id}"
   end
 
   private
